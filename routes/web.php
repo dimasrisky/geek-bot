@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\KategoriController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProdukController;
 
 /*
@@ -28,9 +29,13 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 // bagian user
 Route::get('/', [HomeController::class, 'index'])->name('index');
+route::group(['prefix' => 'order' ,'middleware' => ['isAuth', 'isCustomer']], function(){
+    Route::get('', [OrderController::class, 'index'])->name('order-form');
+    Route::get('', [OrderController::class, 'handle'])->name('order-handle');
+});
 
 // bagian admin
-Route::group(['prefix' => 'admin'], function(){
+Route::group(['prefix' => 'admin', 'middleware' => ['isAuth', 'isAdmin']], function(){
     Route::get('', [ AdminController::class, 'index' ])->name('main-page-admin');
     Route::resource('produk', ProdukController::class)->parameter('produk', 'idProduk')->only('create', 'store', 'edit', 'update', 'destroy');
     Route::resource('kategori', KategoriController::class)->parameter('kategori', 'idKategori')->only('create', 'store', 'destroy');

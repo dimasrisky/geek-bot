@@ -8,11 +8,11 @@
         <img src="/assets/icons/profile.svg" alt="profile" class="w-[10rem]">
         <div class="flex flex-col">
             <label for="email">Email</label>
-            <input type="text" name="email" class="border" required>
+            <input type="text" name="email" class="border p-2 text-black" placeholder="email..." required>
         </div>
         <div class="flex flex-col">
-            <label for="email">Pssword</label>
-            <input type="password" name="password" class="border" required>
+            <label for="password">Pssword</label>
+            <input type="password" name="password" class="border p-2 text-black" placeholder="password..." required>
         </div>
         <button type="submit" class="px-10 py-2 bg-blue-400 rounded-full">Login</button>
     </form>

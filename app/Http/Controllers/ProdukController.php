@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Produk;
+use App\Models\Kategori;
+use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Http\Request;
 
 class ProdukController extends Controller
@@ -12,7 +14,9 @@ class ProdukController extends Controller
      * Show the form for creating a new resource.
      */
     public function create(){
-        return view('admin-view.create-produk');
+        return view('admin-view.create-produk', [
+            'daftarKategori' => Kategori::get()
+        ]);
     }
 
     /**
@@ -24,15 +28,15 @@ class ProdukController extends Controller
             'beratProduk' => ['required'],
             'tanggalProduksi' => ['required'],
             'hargaProduk' => ['required'],
-            'kategori' => ['required']
+            'kategoriProduk' => ['required']
         ]);
 
         Produk::create([
             'namaProduk' => $request->namaProduk,
             'beratProduk' => $request->beratProduk,
             'tanggalProduksi' => $request->tanggalProduksi,
-            'hargaproduk' => $request->hargaProduk,
-            'kategori_id' => $request->kategori
+            'hargaProduk' => $request->hargaProduk,
+            'kategori_id' => $request->kategoriProduk
         ]);
         return redirect()->route('main-page-admin');
     }
@@ -43,28 +47,22 @@ class ProdukController extends Controller
     public function edit(string $idProduk)
     {
         return view('admin-view.edit-produk', [
-            'dataProduk' => Produk::where('id', '=', $idProduk)->first()
+            'dataProduk' => Produk::with(relations: 'kategori')->find($idProduk),
+            'daftarKategori' => Kategori::get()
         ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $idProduk){
-        $request->validate([
-            'namaProduk' => ['required'],
-            'beratProduk' => ['required'],
-            'tanggalProduksi' => ['required'],
-            'hargaProduk' => ['required'],
-            'kategori' => ['required']
-        ]);
+    public function update(Request $request, $idProduk){ 
 
-        Produk::where('id', '=', $idProduk)->first()->update([
+        Produk::find($idProduk)->update([
             'namaProduk' => $request->namaProduk,
             'beratProduk' => $request->beratProduk,
             'tanggalProduksi' => $request->tanggalProduksi,
-            'hargaproduk' => $request->hargaProduk,
-            'kategori_id' => $request->kategori
+            'hargaProduk' => $request->hargaProduk,
+            'kategori_id' => $request->kategoriProduk 
         ]);
 
         return redirect()->route('main-page-admin');

@@ -19,11 +19,13 @@ class AuthController extends Controller
             'password' => ['required'],
         ]);
 
-        // if(auth()->attempt(['nama' => $request->nama, 'password' => $request->password])){
-
-        // }else if(auth()->guard('customers')->attempt(['nama' => $request->nama, 'password' => $request->password])){
-
-        // }
+        if(auth()->attempt(['email' => $request->email, 'password' => $request->password])){
+            if(auth()->user()->role == 'admin'){
+                return redirect()->route('main-page-admin');
+            }else if(auth()->user()->role == 'customer'){
+                return redirect()->route('index');
+            }
+        }
         return back();
     }
 

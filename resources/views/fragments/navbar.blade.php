@@ -7,7 +7,12 @@
         @endguest
         @auth
             {{-- <h1>{{ auth }}</h1>  --}}
-            <a href="{{ route('logout') }}" class="px-7 py-2 bg-blue-800 rounded-sm text-xs">Register</a>
+            <h1 class="font-semibold">{{ auth()->user()->nama }}</h1>
+            <a href="" class="px-7 py-2 bg-blue-800 rounded-sm text-xs">History</a>
+            <form action="{{ route('logout') }}" method="post">
+                @csrf
+                <button type="submit" class="px-7 py-2 bg-blue-800 rounded-sm text-xs">Logout</button>
+            </form>
         @endauth
     </div>
 </nav>

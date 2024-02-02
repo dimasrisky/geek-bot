@@ -4,10 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Auth\Authenticatable;
 
 class Customer extends Model
 {
-    use HasFactory;
+    use HasFactory, Notifiable, Authenticatable;
     protected $table = 'customers';
     protected $fillable = [
         'nama',
